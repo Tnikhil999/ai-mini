@@ -1,16 +1,10 @@
 from flask import Flask, render_template, request
 import pickle
 import numpy as np
-from openai import OpenAI
+import requests
 import os
 
 app = Flask(__name__)
-
-# OpenRouter client
-client = OpenAI(
-    base_url="https://openrouter.ai/api/v1",
-    api_key=os.environ.get("open_key")
-)
 
 # Load trained model
 model = pickle.load(open('model.pkl', 'rb'))
@@ -52,18 +46,27 @@ def predict():
 
     # AI Advice
     try:
-        response = client.chat.completions.create(
-            model="deepseek/deepseek-chat-v3-0324:free",
-            messages=[
-                {"role": "user", "content": prompt}
-            ],
-            timeout=20,
-            extra_headers={
-                "X-Title": "Student Score Predictor"
-            }
+        response = requests.post(
+            url="https://openrouter.ai/api/v1/chat/completions",
+            headers={
+                "Authorization": f"Bearer {os.environ.get('open_key')}",
+                "Content-Type": "application/json"
+            },
+            json={
+                "model": "deepseek/deepseek-chat-v3-0324:free",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": prompt
+                    }
+                ]
+            },
+            timeout=20
         )
 
-        advice = response.choices[0].message.content
+        data = response.json()
+
+        advice = data["choices"][0]["message"]["content"]
 
     except Exception as e:
         advice = f"AI Error: {str(e)}"
