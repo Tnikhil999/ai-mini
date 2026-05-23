@@ -56,11 +56,19 @@ def predict():
 
     advice = response.choices[0].message.content
 
-    return render_template(
-    'index.html',
-    prediction_text=f'Predicted Score: {output}',
-    advice_text=advice
+    try:
+    response = client.chat.completions.create(
+        model="openrouter/free",
+        messages=[
+            {"role": "user", "content": prompt}
+        ],
+        timeout=20
     )
+
+    advice = response.choices[0].message.content
+
+except Exception as e:
+    advice = "AI advice temporarily unavailable."
 
 if __name__ == '__main__':
     app.run(
