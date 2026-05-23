@@ -47,28 +47,25 @@ def predict():
     Give short practical advice in 2-3 sentences.
     """
 
-    response = client.chat.completions.create(
-        model="openrouter/free",
-        messages=[
-            {"role": "user", "content": prompt}
-        ]
-    )
-
-    advice = response.choices[0].message.content
-
     try:
-    response = client.chat.completions.create(
-        model="openrouter/free",
-        messages=[
-            {"role": "user", "content": prompt}
-        ],
-        timeout=20
+        response = client.chat.completions.create(
+            model="openrouter/free",
+            messages=[
+                {"role": "user", "content": prompt}
+            ],
+            timeout=20
+        )
+
+        advice = response.choices[0].message.content
+
+    except Exception:
+        advice = "AI advice temporarily unavailable."
+
+    return render_template(
+        'index.html',
+        prediction_text=f'Predicted Score: {output}',
+        advice_text=advice
     )
-
-    advice = response.choices[0].message.content
-
-except Exception as e:
-    advice = "AI advice temporarily unavailable."
 
 if __name__ == '__main__':
     app.run(
