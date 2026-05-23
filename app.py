@@ -66,7 +66,10 @@ def predict():
 
         data = response.json()
 
-        advice = data["choices"][0]["message"]["content"]
+        if "choices" in data:
+            advice = data["choices"][0]["message"]["content"]
+        else:
+            advice = str(data)
 
     except Exception as e:
         advice = f"AI Error: {str(e)}"
