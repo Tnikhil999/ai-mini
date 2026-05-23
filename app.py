@@ -58,8 +58,8 @@ def predict():
 
         advice = response.choices[0].message.content
 
-    except Exception:
-        advice = "AI advice temporarily unavailable."
+    except Exception as e:
+        advice = str(e)
 
     return render_template(
         'index.html',
