@@ -53,7 +53,7 @@ def predict():
                 "Content-Type": "application/json"
             },
             json={
-                "model": "deepseek/deepseek-chat-v3-0324:free",
+                "model": "meta-llama/llama-3.1-8b-instruct:free",,
                 "messages": [
                     {
                         "role": "user",
