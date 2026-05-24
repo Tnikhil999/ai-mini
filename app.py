@@ -53,7 +53,7 @@ def predict():
                 "Content-Type": "application/json"
             },
             json={
-                "model": "openai/gpt-oss-20b:free",
+                "model": "openrouter/auto",
                 "messages": [
                     {
                         "role": "user",
