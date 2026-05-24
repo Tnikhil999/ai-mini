@@ -13,8 +13,11 @@ model = pickle.load(open('model.pkl', 'rb'))
 def home():
     return render_template('index.html')
 
-@app.route('/predict', methods=['POST'])
+@app.route('/predict', methods=['GET', 'POST'])
 def predict():
+
+    if request.method == 'GET':
+        return render_template('index.html')
 
     study = float(request.form['study'])
     sleep = float(request.form['sleep'])
